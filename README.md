@@ -1,3 +1,20 @@
+https://exonum.com/doc/get-started/install/
+Для фронта у них своя js библиотека, займусь этим потом. Пока смотрю/смотри пример
+1. Делаешь как в ссылке
+2. Устанавливаешь карго (https://www.rust-lang.org/en-US/install.html)
+3. скачиваешь проект
+4. Заходишь в examples/cryptocurrency или типа того
+5. https://exonum.com/doc/get-started/create-service/ посмотри, почитай
+6. cargo run --example demo
+7. Далее в ссылке выше есть curl … типа отправить пут запрос на создания кошелька 
+8. Потом curl post (типа того) смотришь что вышло
+9. Очень сложно. Мда
+
+
+Про Rust пока читала тут https://habr.com/company/bitfury/blog/342208/
+
+
+
 # Exonum
 
 **Status:**
