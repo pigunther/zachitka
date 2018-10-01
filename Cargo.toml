@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "exonum",
+    "crypto",
+    "testkit",
+    "testkit/server",
+    "services/configuration",
+    "services/time",
+    "examples/cryptocurrency",
+    "examples/cryptocurrency-advanced/backend",
+    "examples/timestamping/backend",
+]
+exclude = [ "exonum/fuzz" ]
