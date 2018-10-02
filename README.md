@@ -14,6 +14,14 @@ https://exonum.com/doc/get-started/install/
 Про Rust пока читала тут https://habr.com/company/bitfury/blog/342208/
 
 
+Почитать
+https://habr.com/company/bitfury/blog/346398/
+
+
+
+https://doc.rust-lang.org/book/first-edition/variable-bindings.html
+
+
 
 # Exonum
 
