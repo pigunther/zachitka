@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tabs-container">
     <ul class="nav nav-tabs mb-4">
       <!-- eslint-disable-next-line vue/require-v-for-key -->
       <li v-for="tab in tabs" class="nav-item">
@@ -22,22 +22,64 @@
       return {
         tabs: [],
         current: null
-      }
+      };
     },
     methods: {
       addTab(tab) {
-        this.tabs.push(tab)
+        this.tabs.push(tab);
         if (tab.active === true) {
-          this.current = tab
+          this.current = tab;
         }
       },
 
       changeTab(tab) {
-        this.current = tab
+        this.current = tab;
         this.tabs.forEach(value => {
-          value.active = value === tab
-        })
+          value.active = value === tab;
+        });
       }
     }
-  }
+  };
 </script>
+
+<style>
+  .tabs-container {
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tab-content {
+    flex: 1 0;
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid #040b26;
+    display: flex;
+    justify-content: space-between;
+    background: #040b26;
+  }
+
+  .nav-tabs .nav-link {
+    border: none;
+    height: 40px;
+    color: #7494c5;
+    background: white;
+  }
+
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .nav-link.active {
+    color: white;
+    background-color: #92dd54;
+    border: none;
+    text-transform: capitalize;
+  }
+
+  a {
+    color: #7494c5;
+  }
+
+  nav.nav-tabs.mb-4 {
+    height: 40px;
+  }
+</style>

@@ -4,11 +4,11 @@
 
 <script>
   module.exports = {
-    name: 'spinner',
+    name: "spinner",
     props: {
       visible: Boolean
     }
-  }
+  };
 </script>
 
 <style>
@@ -21,9 +21,9 @@
     z-index: 10000;
   }
 
-  .spinner:before {
-    background-color: rgba(255, 255, 255, .9);
-    content: '';
+  .spinner::before {
+    background-color: rgba(255, 255, 255, 0.9);
+    content: "";
     display: block;
     height: 100%;
     left: 0;
@@ -32,7 +32,7 @@
     width: 100%;
   }
 
-  .spinner:after {
+  .spinner::after {
     background-image: url(/images/spinner.gif);
     background-size: 100%;
     content: '';

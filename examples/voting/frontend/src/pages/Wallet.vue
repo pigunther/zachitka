@@ -126,10 +126,10 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import Modal from '../components/Modal.vue'
-  import Navbar from '../components/Navbar.vue'
-  import Spinner from '../components/Spinner.vue'
+  import { mapState } from 'vuex';
+  import Modal from '../components/Modal.vue';
+  import Navbar from '../components/Navbar.vue';
+  import Spinner from '../components/Spinner.vue';
 
   module.exports = {
     components: {
@@ -155,11 +155,11 @@
         ],
         btnVoteText: 'Vote',
         btnVotedText: 'You have voted'
-      }
+      };
     },
     computed: Object.assign({
       reverseTransactions() {
-        return this.transactions.slice().reverse()
+        return this.transactions.slice().reverse();
       }
     },
     mapState({
@@ -168,25 +168,25 @@
     methods: {
       variantChange() {
         if (this.receiver == '' || this.balance == 'Yes') {
-          $('#btnvote').prop("disabled", true);
+          $('#btnvote').prop('disabled', true);
           this.btnVoteText = this.btnVotedText;
         }
         else {
-          $('#btnvote').prop("disabled", false);
+          $('#btnvote').prop('disabled', false);
         }
       },
 
       async loadUser() {
         if (this.keyPair === null) {
-          this.$store.commit('logout')
-          this.$router.push({ name: 'home' })
-          return
+          this.$store.commit('logout');
+          this.$router.push({ name: 'home' });
+          return;
         }
 
-        this.isSpinnerVisible = true
+        this.isSpinnerVisible = true;
 
         try {
-          const data = await this.$blockchain.getWallet(this.keyPair.publicKey)
+          const data = await this.$blockchain.getWallet(this.keyPair.publicKey);
 
           for (let i in data.candidateWallets) {
             let vname = data.candidateWallets[i].name + ' ..... Votes: ' + data.candidateWallets[i].votes;
@@ -197,20 +197,20 @@
 
           if (data.wallet.balance > 0) {
             this.balance = 'No';
-            $('#btnvote').prop("disabled", false);
+            $('#btnvote').prop('disabled', false);
           }
           else {
             this.balance = 'Yes';
-            $('#btnvote').prop("disabled", true);
+            $('#btnvote').prop('disabled', true);
             this.btnVoteText = this.btnVotedText;
           }
 //          data.wallet.balance > 0 ? this.balance = 'No' : this.balance = 'Yes';
 
           if (this.receiver == '') {
-            $('#btnvote').prop("disabled", true);
+            $('#btnvote').prop('disabled', true);
           }
           else {
-            $('#btnvote').prop("disabled", false);
+            $('#btnvote').prop('disabled', false);
           }
 
           this.cand = data.wallet.cand;
@@ -219,11 +219,11 @@
           if (!this.isCandidate) $('.candidate-item').addClass('hidden');
         
           this.cand > 0 ? this.votes = data.wallet.votes : this.votes = 'n/a';
-          this.transactions = data.transactions
-          this.isSpinnerVisible = false
+          this.transactions = data.transactions;
+          this.isSpinnerVisible = false;
         } catch (error) {
-          this.isSpinnerVisible = false
-          this.$notify('error', error.toString())
+          this.isSpinnerVisible = false;
+          this.$notify('error', error.toString());
         }
       },
 
@@ -247,54 +247,54 @@
 
       async transfer() {
         if (!this.$validateHex(this.receiver)) {
-          return this.$notify('error', 'Invalid public key is passed')
+          return this.$notify('error', 'Invalid public key is passed');
         }
 
         if (this.receiver === this.keyPair.publicKey) {
-          return this.$notify('error', 'Can not transfer funds to yourself')
+          return this.$notify('error', 'Can not transfer funds to yourself');
         }
 
-        this.isSpinnerVisible = true
+        this.isSpinnerVisible = true;
 
-        const seed = this.$blockchain.generateSeed()
+        const seed = this.$blockchain.generateSeed();
 
           console.log('seed: ', seed);
 
         try {
-          await this.$blockchain.transfer(this.keyPair, this.receiver, seed)
-          const data = await this.$blockchain.getWallet(this.keyPair.publicKey)
+          await this.$blockchain.transfer(this.keyPair, this.receiver, seed);
+          const data = await this.$blockchain.getWallet(this.keyPair.publicKey);
 
           if (data.wallet.balance > 0) {
             this.balance = 'No';
-            $('#btnvote').prop("disabled", false);
+            $('#btnvote').prop('disabled', false);
           }
           else {
             this.balance = 'Yes';
-            $('#btnvote').prop("disabled", true);
+            $('#btnvote').prop('disabled', true);
             this.btnVoteText = this.btnVotedText;
           }
 //          data.wallet.balance > 0 ? this.balance = 'No' : this.balance = 'Yes';
 
           
-          this.transactions = data.transactions
-          this.isSpinnerVisible = false
-          this.$notify('success', 'Transfer transaction has been written into the blockchain')
+          this.transactions = data.transactions;
+          this.isSpinnerVisible = false;
+          this.$notify('success', 'Transfer transaction has been written into the blockchain');
         } catch (error) {
-          this.isSpinnerVisible = false
-          this.$notify('error', error.toString())
+          this.isSpinnerVisible = false;
+          this.$notify('error', error.toString());
         }
       }
     },
     mounted() {
       this.$nextTick(function() {
-        this.loadUser()
-      })
+        this.loadUser();
+      });
     }
-  }
+  };
 </script>
 
 <style>
     .hidden {
-        display: none;
+      display: none;
     }
 </style>

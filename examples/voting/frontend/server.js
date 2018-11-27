@@ -6,8 +6,8 @@ var app = express();
 
 // Get app params
 var argv = require('yargs-parser')(process.argv.slice(2));
-var port = argv.port;
-var apiRoot = argv.apiRoot;
+var port = argv.port || "8280";
+var apiRoot = argv.apiRoot || "http://127.0.0.1:8200";
 
 if (typeof port === 'undefined') {
   throw new Error('--port parameter is not set.');

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  const className = 'modal-open'
+  const className = 'modal-open';
 
   module.exports = {
     name: 'modal',
@@ -40,32 +40,32 @@
     },
     watch: {
       visible(value) {
-        this.toggle(value)
+        this.toggle(value);
       }
     },
     methods: {
       close() {
-        this.$emit('close')
+        this.$emit('close');
       },
 
       submit() {
-        this.$emit('submit')
+        this.$emit('submit');
       },
 
       toggle(state) {
         if (state) {
-          document.body.classList.add(className)
+          document.body.classList.add(className);
         } else {
-          document.body.classList.remove(className)
+          document.body.classList.remove(className);
         }
       }
     },
     mounted() {
       this.$nextTick(function() {
-        this.toggle(false)
-      })
+        this.toggle(false);
+      });
     }
-  }
+  };
 </script>
 
 <style>

@@ -103,8 +103,8 @@
 </template>
 
 <script>
-  import Navbar from '../components/Navbar.vue'
-  import Spinner from '../components/Spinner.vue'
+  import Navbar from '../components/Navbar.vue';
+  import Spinner from '../components/Spinner.vue';
 
   module.exports = {
     components: {
@@ -121,29 +121,29 @@
         status: {},
         type: '',
         isSpinnerVisible: false
-      }
+      };
     },
     methods: {
       async loadTransaction() {
-        this.isSpinnerVisible = true
+        this.isSpinnerVisible = true;
 
         try {
-          const data = await this.$blockchain.getTransaction(this.hash)
-          this.transaction = data.content
-          this.location = data.location
-          this.status = data.status
-          this.type = data.type
-          this.isSpinnerVisible = false
+          const data = await this.$blockchain.getTransaction(this.hash);
+          this.transaction = data.content;
+          this.location = data.location;
+          this.status = data.status;
+          this.type = data.type;
+          this.isSpinnerVisible = false;
         } catch (error) {
-          this.isSpinnerVisible = false
-          this.$notify('error', error.toString())
+          this.isSpinnerVisible = false;
+          this.$notify('error', error.toString());
         }
       }
     },
     mounted() {
       this.$nextTick(function() {
-        this.loadTransaction()
-      })
+        this.loadTransaction();
+      });
     }
-  }
+  };
 </script>

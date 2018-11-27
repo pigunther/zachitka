@@ -146,13 +146,11 @@ impl PublicApi {
 
 
     /// Endpoint for handling voting transactions.
-    pub fn post_transaction(
-        state: &ServiceApiState,
-        query: WalletTransactions,
-    ) -> api::Result<TransactionResponse> {
+    pub fn post_transaction(state: &ServiceApiState, query: WalletTransactions, ) -> api::Result<TransactionResponse> {
         let transaction: Box<dyn Transaction> = query.into();
         let tx_hash = transaction.hash();
         state.sender().send(transaction)?;
+        println!("TransactionResponse: {:?}, {:?}", transaction, tx_hash);
         Ok(TransactionResponse { tx_hash })
     }
 

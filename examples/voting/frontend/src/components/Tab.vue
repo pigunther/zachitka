@@ -10,7 +10,7 @@
     data() {
       return {
         active: false
-      }
+      };
     },
     props: {
       title: String,
@@ -21,10 +21,17 @@
       }
     },
     created() {
-      this.active = this.isActive
+      this.active = this.isActive;
     },
     mounted() {
-      this.$parent.addTab(this)
+      this.$parent.addTab(this);
     }
-  }
+  };
 </script>
+
+<style>
+  .tab-pane {
+    height: 100%;
+  }
+
+</style>

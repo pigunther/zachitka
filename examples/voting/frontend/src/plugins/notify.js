@@ -1,4 +1,4 @@
-import Noty from 'noty'
+import Noty from 'noty';
 
 export default {
   install(Vue) {
@@ -10,7 +10,7 @@ export default {
         text: text,
         killer: true,
         progressBar: false
-      }).show()
-    }
+      }).show();
+    };
   }
-}
+};

@@ -59,8 +59,8 @@
 </template>
 
 <script>
-  import Navbar from '../components/Navbar.vue'
-  import Spinner from '../components/Spinner.vue'
+  import Navbar from '../components/Navbar.vue';
+  import Spinner from '../components/Spinner.vue';
 
   module.exports = {
     components: {
@@ -75,40 +75,40 @@
         block: {},
         transactions: [],
         isSpinnerVisible: false
-      }
+      };
     },
     computed: {
       previous() {
-        return (parseInt(this.height) - 1).toString()
+        return (parseInt(this.height) - 1).toString();
       },
       next() {
-        return (parseInt(this.height) + 1).toString()
+        return (parseInt(this.height) + 1).toString();
       }
     },
     watch: {
       height() {
-        this.loadBlock()
+        this.loadBlock();
       }
     },
     methods: {
       async loadBlock() {
-        this.isSpinnerVisible = true
+        this.isSpinnerVisible = true;
 
         try {
-          const data = await this.$blockchain.getBlock(this.height)
-          this.block = data.block
-          this.transactions = data.txs
-          this.isSpinnerVisible = false
+          const data = await this.$blockchain.getBlock(this.height);
+          this.block = data.block;
+          this.transactions = data.txs;
+          this.isSpinnerVisible = false;
         } catch (error) {
-          this.isSpinnerVisible = false
-          this.$notify('error', error.toString())
+          this.isSpinnerVisible = false;
+          this.$notify('error', error.toString());
         }
       }
     },
     mounted() {
       this.$nextTick(function() {
-        this.loadBlock()
-      })
+        this.loadBlock();
+      });
     }
-  }
+  };
 </script>
