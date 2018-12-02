@@ -20,7 +20,9 @@ use config::ConfigurationServiceConfig;
 use errors::Error as ServiceError;
 use exonum::{
     blockchain::{ExecutionResult, Schema as CoreSchema, StoredConfiguration, Transaction},
-    crypto::{CryptoHash, Hash, PublicKey}, messages::Message, node::State,
+    crypto::{CryptoHash, Hash, PublicKey},
+    messages::Message,
+    node::State,
     storage::{Fork, Snapshot},
 };
 use schema::{MaybeVote, ProposeData, Schema};

@@ -29,7 +29,8 @@ use byteorder::{ByteOrder, LittleEndian};
 use futures::future::Future;
 use tokio_codec::Framed;
 use tokio_io::{
-    io::{read_exact, write_all}, AsyncRead, AsyncWrite,
+    io::{read_exact, write_all},
+    AsyncRead, AsyncWrite,
 };
 
 use events::{codec::MessagesCodec, error::into_failure};

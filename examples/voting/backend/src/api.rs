@@ -16,8 +16,11 @@
 
 use exonum::{
     api::{self, ServiceApiBuilder, ServiceApiState},
-    blockchain::{self, BlockProof, Transaction, TransactionSet}, crypto::{Hash, PublicKey},
-    helpers::Height, node::TransactionSend, storage::{ListProof, MapProof},
+    blockchain::{self, BlockProof, Transaction, TransactionSet},
+    crypto::{Hash, PublicKey},
+    helpers::Height,
+    node::TransactionSend,
+    storage::{ListProof, MapProof},
 };
 
 use transactions::WalletTransactions;
@@ -115,38 +118,42 @@ impl PublicApi {
             }
         });
 
-		let walets = currency_schema.wallets();
-//		let mut ckeys = Vec::new();
-		let mut candidates = Vec::new();
+        let walets = currency_schema.wallets();
+        //		let mut ckeys = Vec::new();
+        let mut candidates = Vec::new();
 
-		for val in walets.values() {
-			if val.cand() == 1 {
-//				ckeys.push(*val.pub_key());
-				let to_wallet: MapProof<PublicKey, Wallet> = currency_schema.wallets().get_proof(*val.pub_key());
-				let to_table: MapProof<Hash, Hash> = general_schema.get_proof_to_service_table(VOTING_SERVICE_ID, 0);
-				let cwallet_proof = WalletProof {
-					to_table,
-					to_wallet,
-				};
-				candidates.push(cwallet_proof);
-			}
-		}
-//		println!("mcandidates: {:?}\n", candidates);
+        for val in walets.values() {
+            if val.cand() == 1 {
+                //				ckeys.push(*val.pub_key());
+                let to_wallet: MapProof<PublicKey, Wallet> =
+                    currency_schema.wallets().get_proof(*val.pub_key());
+                let to_table: MapProof<Hash, Hash> =
+                    general_schema.get_proof_to_service_table(VOTING_SERVICE_ID, 0);
+                let cwallet_proof = WalletProof {
+                    to_table,
+                    to_wallet,
+                };
+                candidates.push(cwallet_proof);
+            }
+        }
+        //		println!("mcandidates: {:?}\n", candidates);
 
-//		let candidate_keys: Vec<PublicKey> = ckeys.iter().cloned().collect::<Vec<PublicKey>>();
+        //		let candidate_keys: Vec<PublicKey> = ckeys.iter().cloned().collect::<Vec<PublicKey>>();
 
         Ok(WalletInfo {
             block_proof,
             wallet_proof,
             wallet_history,
-			candidates,
-//			candidate_keys,
+            candidates,
+            //			candidate_keys,
         })
     }
 
-
     /// Endpoint for handling voting transactions.
-    pub fn post_transaction(state: &ServiceApiState, query: WalletTransactions, ) -> api::Result<TransactionResponse> {
+    pub fn post_transaction(
+        state: &ServiceApiState,
+        query: WalletTransactions,
+    ) -> api::Result<TransactionResponse> {
         let transaction: Box<dyn Transaction> = query.into();
         let tx_hash = transaction.hash();
         state.sender().send(transaction)?;

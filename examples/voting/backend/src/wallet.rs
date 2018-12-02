@@ -25,10 +25,10 @@ encoding_struct! {
         name:               &str,
         /// Current balance of the wallet.
         balance:            u64,
-		/// candidate
-		cand:				u64,
-		/// candidate
-		votes:				u64,
+        /// candidate
+        cand:				u64,
+        /// candidate
+        votes:				u64,
         /// Length of the transactions history.
         history_len:        u64,
         /// `Hash` of the transactions history.
@@ -43,8 +43,8 @@ impl Wallet {
             self.pub_key(),
             self.name(),
             balance,
-			self.cand(),
-			self.votes(),
+            self.cand(),
+            self.votes(),
             self.history_len() + 1,
             history_hash,
         )
@@ -56,8 +56,8 @@ impl Wallet {
             self.pub_key(),
             self.name(),
             self.balance(),
-			self.cand(),
-			votes,
+            self.cand(),
+            votes,
             self.history_len() + 1,
             history_hash,
         )

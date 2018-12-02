@@ -475,7 +475,8 @@ mod tests {
             let mut buf = [0; 32];
             rng.fill_bytes(&mut buf);
             buf
-        }).prefix(1 + rng.gen::<u16>() % 255)
+        })
+        .prefix(1 + rng.gen::<u16>() % 255)
     }
 
     #[test]

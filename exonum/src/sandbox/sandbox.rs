@@ -20,9 +20,13 @@ use env_logger;
 use futures::{self, sync::mpsc, Async, Future, Sink, Stream};
 
 use std::{
-    self, cell::{Ref, RefCell, RefMut},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque}, iter::FromIterator,
-    net::{IpAddr, Ipv4Addr, SocketAddr}, ops::{AddAssign, Deref}, sync::{Arc, Mutex},
+    self,
+    cell::{Ref, RefCell, RefMut},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    iter::FromIterator,
+    net::{IpAddr, Ipv4Addr, SocketAddr},
+    ops::{AddAssign, Deref},
+    sync::{Arc, Mutex},
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
@@ -115,7 +119,8 @@ impl SandboxInner {
             while let Async::Ready(Some(internal)) = self.internal_requests_rx.poll()? {
                 match internal {
                     InternalRequest::Timeout(t) => self.timers.push(t),
-                    InternalRequest::JumpToRound(height, round) => self.handler
+                    InternalRequest::JumpToRound(height, round) => self
+                        .handler
                         .handle_event(InternalEvent::JumpToRound(height, round).into()),
                     InternalRequest::Shutdown => unimplemented!(),
                     InternalRequest::VerifyTx(tx) => {
@@ -708,7 +713,8 @@ impl Sandbox {
 
     pub fn round_timeout_increase(&self) -> Milliseconds {
         (self.cfg().consensus.first_round_timeout
-            * ConsensusConfig::TIMEOUT_LINEAR_INCREASE_PERCENT) / 100
+            * ConsensusConfig::TIMEOUT_LINEAR_INCREASE_PERCENT)
+            / 100
     }
 
     pub fn current_round_timeout(&self) -> Milliseconds {
@@ -802,7 +808,8 @@ impl Sandbox {
         let internal_channel = mpsc::channel(100);
         let api_channel = mpsc::channel(100);
 
-        let address: SocketAddr = self.a(ValidatorId(0))
+        let address: SocketAddr = self
+            .a(ValidatorId(0))
             .parse()
             .expect("Fail to parse socket address");
         let inner = self.inner.borrow();

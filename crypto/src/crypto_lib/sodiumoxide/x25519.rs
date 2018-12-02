@@ -15,7 +15,8 @@
 //! X25519 related types and methods used in Diffie-Hellman key exchange.
 
 use std::{
-    fmt, ops::{Index, Range, RangeFrom, RangeFull, RangeTo},
+    fmt,
+    ops::{Index, Range, RangeFrom, RangeFull, RangeTo},
 };
 
 use super::sodiumoxide::crypto::{
@@ -174,5 +175,5 @@ implement_x25519_type! {
     struct SecretKey, Curve25519Scalar, SECRET_KEY_LENGTH
 }
 
-implement_index_traits!{ PublicKey }
-implement_index_traits!{ SecretKey }
+implement_index_traits! { PublicKey }
+implement_index_traits! { SecretKey }

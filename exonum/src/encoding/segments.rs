@@ -81,10 +81,12 @@ where
         let pointer_count_start: Offset = (pointer_from + 4)?.unchecked_offset();
         let segment_start: CheckedOffset = LittleEndian::read_u32(
             &buffer[pointer_from.unchecked_offset() as usize..pointer_count_start as usize],
-        ).into();
+        )
+        .into();
         let count: CheckedOffset = LittleEndian::read_u32(
             &buffer[pointer_count_start as usize..pointer_to.unchecked_offset() as usize],
-        ).into();
+        )
+        .into();
 
         if segment_start < latest_segment {
             return Err(Error::OverlappingSegment {
@@ -370,4 +372,4 @@ macro_rules! implement_pod_array_field {
     };
 }
 
-implement_pod_array_field!{Hash}
+implement_pod_array_field! {Hash}

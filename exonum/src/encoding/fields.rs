@@ -20,7 +20,9 @@ use rust_decimal::Decimal;
 use uuid::{self, Uuid};
 
 use std::{
-    mem, net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr}, result::Result as StdResult,
+    mem,
+    net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr},
+    result::Result as StdResult,
 };
 
 use super::{CheckedOffset, Error, Offset, Result};
@@ -247,16 +249,16 @@ impl<'a> Field<'a> for i8 {
     }
 }
 
-implement_std_field!{u16 LittleEndian::read_u16; LittleEndian::write_u16}
-implement_std_field!{i16 LittleEndian::read_i16; LittleEndian::write_i16}
-implement_std_field!{u32 LittleEndian::read_u32; LittleEndian::write_u32}
-implement_std_field!{i32 LittleEndian::read_i32; LittleEndian::write_i32}
-implement_std_field!{u64 LittleEndian::read_u64; LittleEndian::write_u64}
-implement_std_field!{i64 LittleEndian::read_i64; LittleEndian::write_i64}
+implement_std_field! {u16 LittleEndian::read_u16; LittleEndian::write_u16}
+implement_std_field! {i16 LittleEndian::read_i16; LittleEndian::write_i16}
+implement_std_field! {u32 LittleEndian::read_u32; LittleEndian::write_u32}
+implement_std_field! {i32 LittleEndian::read_i32; LittleEndian::write_i32}
+implement_std_field! {u64 LittleEndian::read_u64; LittleEndian::write_u64}
+implement_std_field! {i64 LittleEndian::read_i64; LittleEndian::write_i64}
 
-implement_std_typedef_field!{Height(u64) LittleEndian::read_u64; LittleEndian::write_u64}
-implement_std_typedef_field!{Round(u32) LittleEndian::read_u32; LittleEndian::write_u32}
-implement_std_typedef_field!{ValidatorId(u16) LittleEndian::read_u16; LittleEndian::write_u16}
+implement_std_typedef_field! {Height(u64) LittleEndian::read_u64; LittleEndian::write_u64}
+implement_std_typedef_field! {Round(u32) LittleEndian::read_u32; LittleEndian::write_u32}
+implement_std_typedef_field! {ValidatorId(u16) LittleEndian::read_u16; LittleEndian::write_u16}
 
 implement_pod_as_ref_field! {Signature}
 implement_pod_as_ref_field! {PublicKey}

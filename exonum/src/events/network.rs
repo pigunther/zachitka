@@ -14,7 +14,10 @@
 
 use failure;
 use futures::{
-    future, future::{err, Either}, sync::mpsc, unsync, Future, IntoFuture, Sink, Stream,
+    future,
+    future::{err, Either},
+    sync::mpsc,
+    unsync, Future, IntoFuture, Sink, Stream,
 };
 use tokio::net::{TcpListener, TcpStream};
 use tokio_codec::Framed;
@@ -22,7 +25,8 @@ use tokio_core::reactor::Handle;
 
 use tokio_dns;
 use tokio_retry::{
-    strategy::{jitter, FixedInterval}, Retry,
+    strategy::{jitter, FixedInterval},
+    Retry,
 };
 
 use std::{cell::RefCell, collections::HashMap, net::SocketAddr, rc::Rc, time::Duration};
@@ -30,7 +34,9 @@ use std::{cell::RefCell, collections::HashMap, net::SocketAddr, rc::Rc, time::Du
 use super::{error::log_error, to_box};
 use crypto::PublicKey;
 use events::{
-    codec::MessagesCodec, error::into_failure, noise::{Handshake, HandshakeParams, NoiseHandshake},
+    codec::MessagesCodec,
+    error::into_failure,
+    noise::{Handshake, HandshakeParams, NoiseHandshake},
 };
 use helpers::Milliseconds;
 use messages::{Any, Connect, Message, RawMessage};
@@ -308,7 +314,8 @@ impl NetworkHandler {
             .map(jitter)
             .take(max_tries);
 
-        let unresolved_address = self.connect_list
+        let unresolved_address = self
+            .connect_list
             .find_address_by_key(&key)
             .map(|a| a.address.clone());
 
@@ -434,7 +441,8 @@ impl NetworkHandler {
                         .ok_or_else(|| format_err!("shutdown twice"))
                         .into_future(),
                 ),
-            }.map_err(log_error);
+            }
+            .map_err(log_error);
 
             handle.spawn(fut);
             Ok(())

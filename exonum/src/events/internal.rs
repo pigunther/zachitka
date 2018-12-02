@@ -13,7 +13,9 @@
 // limitations under the License.
 
 use futures::{
-    future::{self, Either, Executor}, sync::mpsc, Future, Sink, Stream,
+    future::{self, Either, Executor},
+    sync::mpsc,
+    Future, Sink, Stream,
 };
 use tokio_core::reactor::{Handle, Timeout};
 
@@ -78,7 +80,8 @@ impl InternalPart {
                     }
 
                     InternalRequest::Timeout(TimeoutRequest(time, timeout)) => {
-                        let duration = time.duration_since(SystemTime::now())
+                        let duration = time
+                            .duration_since(SystemTime::now())
                             .unwrap_or_else(|_| Duration::from_millis(0));
 
                         let fut = Timeout::new(duration, &handle)

@@ -39,8 +39,10 @@
 
 use criterion::{Criterion, ParameterizedBenchmark, Throughput};
 use exonum::{
-    blockchain::{Blockchain, Schema, Service, Transaction}, crypto::{Hash, PublicKey, SecretKey},
-    helpers::{Height, ValidatorId}, node::ApiSender,
+    blockchain::{Blockchain, Schema, Service, Transaction},
+    crypto::{Hash, PublicKey, SecretKey},
+    helpers::{Height, ValidatorId},
+    node::ApiSender,
     storage::{Database, DbOptions, Patch, RocksDB},
 };
 use futures::sync::mpsc;
@@ -75,7 +77,8 @@ fn create_rocksdb(tempdir: &TempDir) -> RocksDB {
 
 fn create_blockchain(db: impl Database, services: Vec<Box<Service>>) -> Blockchain {
     use exonum::{
-        blockchain::{GenesisConfig, ValidatorKeys}, crypto,
+        blockchain::{GenesisConfig, ValidatorKeys},
+        crypto,
     };
     use std::sync::Arc;
 
@@ -106,8 +109,11 @@ fn execute_block(blockchain: &Blockchain, height: u64, txs: &[Hash]) -> (Hash, P
 mod timestamping {
     use super::{gen_keypair_from_rng, BoxedTx};
     use exonum::{
-        blockchain::{ExecutionResult, Service, Transaction}, crypto::{CryptoHash, Hash, PublicKey},
-        encoding::Error as EncodingError, messages::RawTransaction, storage::{Fork, Snapshot},
+        blockchain::{ExecutionResult, Service, Transaction},
+        crypto::{CryptoHash, Hash, PublicKey},
+        encoding::Error as EncodingError,
+        messages::RawTransaction,
+        storage::{Fork, Snapshot},
     };
     use rand::Rng;
 
@@ -191,7 +197,9 @@ mod cryptocurrency {
     use super::{gen_keypair_from_rng, BoxedTx};
     use exonum::{
         blockchain::{ExecutionError, ExecutionResult, Service, Transaction},
-        crypto::{Hash, PublicKey}, encoding::Error as EncodingError, messages::RawTransaction,
+        crypto::{Hash, PublicKey},
+        encoding::Error as EncodingError,
+        messages::RawTransaction,
         storage::{Fork, MapIndex, ProofMapIndex, Snapshot},
     };
     use rand::{seq::sample_slice_ref, Rng};
@@ -372,12 +380,10 @@ fn assert_transactions_in_pool(blockchain: &Blockchain, tx_hashes: &[Hash]) {
     let snapshot = blockchain.snapshot();
     let schema = Schema::new(&snapshot);
 
-    assert!(
-        tx_hashes
-            .iter()
-            .all(|hash| schema.transactions_pool().contains(&hash)
-                && !schema.transactions_locations().contains(&hash))
-    );
+    assert!(tx_hashes
+        .iter()
+        .all(|hash| schema.transactions_pool().contains(&hash)
+            && !schema.transactions_locations().contains(&hash)));
     assert_eq!(tx_hashes.len() as u64, schema.transactions_pool_len());
 }
 
@@ -446,8 +452,9 @@ fn execute_block_rocksdb(
                 });
             },
             TXS_IN_BLOCK,
-        ).sample_size(50)
-            .throughput(|&&txs_in_block| Throughput::Elements(txs_in_block as u32)),
+        )
+        .sample_size(50)
+        .throughput(|&&txs_in_block| Throughput::Elements(txs_in_block as u32)),
     );
 }
 

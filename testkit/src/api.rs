@@ -24,7 +24,8 @@ use serde_urlencoded;
 use std::fmt::{self, Display};
 
 use exonum::{
-    api::{self, ApiAggregator, ServiceApiState}, blockchain::{SharedNodeState, Transaction},
+    api::{self, ApiAggregator, ServiceApiState},
+    blockchain::{SharedNodeState, Transaction},
     encoding::serialize::reexport::{DeserializeOwned, Serialize},
     node::{ApiSender, TransactionSend},
 };
@@ -182,7 +183,8 @@ where
     where
         R: DeserializeOwned + 'static,
     {
-        let params = self.query
+        let params = self
+            .query
             .as_ref()
             .map(|query| {
                 format!(
@@ -202,7 +204,8 @@ where
 
         trace!("GET {}", url);
 
-        let response = self.test_client
+        let response = self
+            .test_client
             .get(&url)
             .send()
             .expect("Unable to send request");

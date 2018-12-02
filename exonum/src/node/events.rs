@@ -120,10 +120,12 @@ impl NodeHandler {
         let schema = Schema::new(snapshot);
         let pool = schema.transactions_pool();
         for tx_hash in pool.iter() {
-            self.broadcast(&schema
-                .transactions()
-                .get(&tx_hash)
-                .expect("Rebroadcast: invalid transaction hash"))
+            self.broadcast(
+                &schema
+                    .transactions()
+                    .get(&tx_hash)
+                    .expect("Rebroadcast: invalid transaction hash"),
+            )
         }
     }
 }

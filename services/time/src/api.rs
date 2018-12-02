@@ -67,7 +67,8 @@ impl PrivateApi {
         let idx = schema.validators_times();
 
         // The times of all validators for which time is known.
-        let validators_times = idx.iter()
+        let validators_times = idx
+            .iter()
             .map(|(public_key, time)| ValidatorTime {
                 public_key,
                 time: Some(time),

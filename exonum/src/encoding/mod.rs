@@ -113,7 +113,8 @@ pub use self::{error::Error, fields::Field, segments::SegmentField};
 pub mod serialize;
 
 use std::{
-    convert::From, ops::{Add, Div, Mul, Sub},
+    convert::From,
+    ops::{Add, Div, Mul, Sub},
 };
 
 mod error;
@@ -178,10 +179,10 @@ macro_rules! implement_default_ops_checked {
     };
 }
 
-implement_default_ops_checked!{Add add checked_add }
-implement_default_ops_checked!{Sub sub checked_sub }
-implement_default_ops_checked!{Mul mul checked_mul }
-implement_default_ops_checked!{Div div checked_div }
+implement_default_ops_checked! {Add add checked_add }
+implement_default_ops_checked! {Sub sub checked_sub }
+implement_default_ops_checked! {Mul mul checked_mul }
+implement_default_ops_checked! {Div div checked_div }
 
 impl From<Offset> for CheckedOffset {
     fn from(offset: Offset) -> Self {

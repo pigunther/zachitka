@@ -25,13 +25,15 @@ extern crate exonum_testkit;
 extern crate rand;
 
 use exonum::{
-    blockchain::Transaction, crypto::{self, PublicKey, SecretKey},
+    blockchain::Transaction,
+    crypto::{self, PublicKey, SecretKey},
 };
 use exonum_testkit::{TestKit, TestKitBuilder};
 
 // Import data types used in tests from the crate where the service is defined.
 use cryptocurrency::{
-    schema::{CurrencySchema, Wallet}, service::CurrencyService,
+    schema::{CurrencySchema, Wallet},
+    service::CurrencyService,
     transactions::{TxCreateWallet, TxTransfer},
 };
 
