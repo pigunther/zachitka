@@ -14,9 +14,13 @@
 
 //! Sample counter service.
 use exonum::{
-    api, blockchain::{ExecutionError, ExecutionResult, Service, Transaction, TransactionSet},
-    crypto::{Hash, PublicKey}, encoding, messages::{Message, RawTransaction},
-    node::TransactionSend, storage::{Entry, Fork, Snapshot},
+    api,
+    blockchain::{ExecutionError, ExecutionResult, Service, Transaction, TransactionSet},
+    crypto::{Hash, PublicKey},
+    encoding,
+    messages::{Message, RawTransaction},
+    node::TransactionSend,
+    storage::{Entry, Fork, Snapshot},
 };
 
 pub const SERVICE_ID: u16 = 1;
@@ -50,7 +54,8 @@ impl<'a> CounterSchema<&'a mut Fork> {
     }
 
     fn inc_count(&mut self, inc: u64) -> u64 {
-        let count = self.count()
+        let count = self
+            .count()
             .unwrap_or(0)
             .checked_add(inc)
             .expect("attempt to add with overflow");

@@ -17,7 +17,8 @@ use std::str;
 use config::ConfigurationServiceConfig;
 use exonum::{
     blockchain::{Schema, StoredConfiguration, Transaction},
-    crypto::{hash, CryptoHash, Hash, HASH_SIZE}, helpers::{Height, ValidatorId},
+    crypto::{hash, CryptoHash, Hash, HASH_SIZE},
+    helpers::{Height, ValidatorId},
     storage::StorageValue,
 };
 use exonum_testkit::{TestKit, TestKitBuilder, TestNode};
@@ -82,7 +83,8 @@ impl ConfigurationTestKit for TestKit {
         self.create_block_with_transactions(txvec![tx_propose]);
         // Push votes
         let cfg_proposal_hash = cfg_proposal.hash();
-        let tx_votes = self.network()
+        let tx_votes = self
+            .network()
             .validators()
             .iter()
             .map(|validator| new_tx_config_vote(validator, cfg_proposal_hash))
@@ -536,11 +538,9 @@ fn test_config_txs_discarded_when_not_referencing_actual_config_or_sent_by_illeg
         );
         let illegal_propose2 = new_tx_config_propose(&illegal_node, new_cfg.clone());
         testkit.create_block_with_transactions(txvec![illegal_propose1, illegal_propose2]);
-        assert!(
-            testkit
-                .find_propose(new_cfg_bad_previous_cfg.hash())
-                .is_none()
-        );
+        assert!(testkit
+            .find_propose(new_cfg_bad_previous_cfg.hash())
+            .is_none());
         assert!(testkit.find_propose(new_cfg.hash()).is_none());
     }
     {
@@ -583,11 +583,9 @@ fn test_config_txs_discarded_when_not_referencing_actual_config_or_sent_by_illeg
             new_cfg,
             Schema::new(&testkit.snapshot()).actual_configuration()
         );
-        assert!(
-            Schema::new(&testkit.snapshot())
-                .following_configuration()
-                .is_none()
-        );
+        assert!(Schema::new(&testkit.snapshot())
+            .following_configuration()
+            .is_none());
     }
     {
         let expected_votes = (0..3)

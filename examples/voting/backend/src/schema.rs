@@ -15,13 +15,13 @@
 //! Voting database schema.
 
 use exonum::{
-    crypto::{Hash, PublicKey}, storage::{Fork, ProofListIndex, ProofMapIndex, Snapshot},
+    crypto::{Hash, PublicKey},
+    storage::{Fork, ProofListIndex, ProofMapIndex, Snapshot},
 };
 
 use wallet::Wallet;
 use INITIAL_BALANCE;
 use INITIAL_VOTES;
-
 
 /// Database schema for the voting.
 #[derive(Debug)]
@@ -97,7 +97,11 @@ impl<'a> Schema<&'a mut Fork> {
     /// Decrease balance of the wallet and append new record to its history.
     /// Means that voter voted.
     /// Panics if there is no wallet with given public key.
-    pub fn decrease_wallet_balance(&mut self, wallet: Wallet/*, amount: u64*/, transaction: &Hash) {
+    pub fn decrease_wallet_balance(
+        &mut self,
+        wallet: Wallet, /*, amount: u64*/
+        transaction: &Hash,
+    ) {
         let wallet = {
             let mut history = self.wallet_history_mut(wallet.pub_key());
             history.push(*transaction);
@@ -113,10 +117,18 @@ impl<'a> Schema<&'a mut Fork> {
             let mut history = self.wallet_history_mut(key);
             history.push(*transaction);
             let history_hash = history.merkle_root();
-            Wallet::new(key, name, INITIAL_BALANCE, cand, INITIAL_VOTES, history.len(), &history_hash)
+            Wallet::new(
+                key,
+                name,
+                INITIAL_BALANCE,
+                cand,
+                INITIAL_VOTES,
+                history.len(),
+                &history_hash,
+            )
         };
-		println!("Create the wallet: {:?}", wallet);
-		println!("transaction: {:?}", transaction);
+        println!("Create the wallet: {:?}", wallet);
+        println!("transaction: {:?}", transaction);
         self.wallets_mut().put(key, wallet);
     }
 }

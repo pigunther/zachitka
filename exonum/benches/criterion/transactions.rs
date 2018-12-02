@@ -22,16 +22,20 @@ use futures::{stream, sync::mpsc::Sender, sync::oneshot, Future, Sink};
 use tokio_core::reactor::Core;
 
 use std::{
-    sync::{Arc, RwLock}, thread::{self, JoinHandle},
+    sync::{Arc, RwLock},
+    thread::{self, JoinHandle},
 };
 
 use exonum::events::InternalRequest;
 use exonum::node::EventsPoolCapacity;
 use exonum::node::ExternalMessage;
 use exonum::{
-    blockchain::{ExecutionResult, Transaction}, crypto::{self, PublicKey},
+    blockchain::{ExecutionResult, Transaction},
+    crypto::{self, PublicKey},
     events::{Event, EventHandler, HandlerPart, InternalEvent, InternalPart, NetworkEvent},
-    messages::Message, node::NodeChannel, storage::Fork,
+    messages::Message,
+    node::NodeChannel,
+    storage::Fork,
 };
 use tokio_threadpool::Builder as ThreadPoolBuilder;
 
@@ -258,8 +262,9 @@ pub fn bench_verify_transactions(c: &mut Criterion) {
             "size",
             bench_verify_transactions_event_loop,
             parameters.clone(),
-        ).throughput(|_| Throughput::Elements(TRANSACTIONS_COUNT as u32))
-            .plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic))
-            .sample_size(SAMPLE_SIZE),
+        )
+        .throughput(|_| Throughput::Elements(TRANSACTIONS_COUNT as u32))
+        .plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic))
+        .sample_size(SAMPLE_SIZE),
     );
 }

@@ -23,7 +23,9 @@ use serde_json::Value as JsonValue;
 
 use exonum::{
     blockchain::{Schema, Transaction, TransactionErrorType, TxLocation},
-    crypto::{self, CryptoHash, Hash}, explorer::*, helpers::Height,
+    crypto::{self, CryptoHash, Hash},
+    explorer::*,
+    helpers::Height,
     messages::{Message, ServiceMessage},
 };
 
@@ -227,11 +229,9 @@ fn test_explorer_block_iter() {
         .flat_map(|info| info.with_transactions().transactions)
         .collect();
     assert_eq!(transactions.len(), 12);
-    assert!(
-        transactions
-            .iter()
-            .all(|tx| tx.location().block_height() < Height(10))
-    );
+    assert!(transactions
+        .iter()
+        .all(|tx| tx.location().block_height() < Height(10)));
 
     let heights: Vec<_> = explorer
         .blocks(..)
@@ -360,11 +360,9 @@ fn test_block_with_transactions() {
     assert!(!block.is_empty());
     assert!(block[1].status().is_ok());
 
-    assert!(
-        block
-            .iter()
-            .all(|tx| tx.content().raw().message_type() == CreateWallet::MESSAGE_ID)
-    );
+    assert!(block
+        .iter()
+        .all(|tx| tx.content().raw().message_type() == CreateWallet::MESSAGE_ID));
 }
 
 #[test]

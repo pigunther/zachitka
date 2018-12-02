@@ -19,7 +19,10 @@ use actix::Addr;
 use serde_json::Value;
 
 use std::{
-    collections::{HashMap, HashSet}, fmt, net::SocketAddr, sync::{Arc, RwLock},
+    collections::{HashMap, HashSet},
+    fmt,
+    net::SocketAddr,
+    sync::{Arc, RwLock},
 };
 
 use super::transaction::Transaction;
@@ -433,7 +436,8 @@ impl SharedNodeState {
     /// Returns a boolean value which indicates whether the consensus is achieved.
     pub fn consensus_status(&self) -> bool {
         let lock = self.state.read().expect("Expected read lock.");
-        let mut active_validators = lock.incoming_connections
+        let mut active_validators = lock
+            .incoming_connections
             .iter()
             .chain(lock.outgoing_connections.iter())
             .filter(|ci| {
@@ -507,7 +511,8 @@ impl SharedNodeState {
 
     /// Broadcast message to all subscribers.
     pub(crate) fn broadcast(&self, block_hash: &Hash) {
-        if let Some(ref address) = self.state
+        if let Some(ref address) = self
+            .state
             .read()
             .expect("Expected read lock")
             .broadcast_server_address

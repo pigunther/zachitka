@@ -18,7 +18,8 @@ use bit_vec::BitVec;
 use std::{cell::RefCell, collections::BTreeMap, time::Duration};
 
 use super::{
-    sandbox::Sandbox, timestamping::{TimestampTx, TimestampingTxGenerator, DATA_SIZE},
+    sandbox::Sandbox,
+    timestamping::{TimestampTx, TimestampingTxGenerator, DATA_SIZE},
 };
 use blockchain::Block;
 use crypto::{CryptoHash, Hash, HASH_SIZE};
@@ -102,7 +103,8 @@ impl<'a> BlockBuilder<'a> {
             self.tx_count.unwrap_or(0),
             &self.prev_hash.unwrap_or_else(|| self.sandbox.last_hash()),
             &self.tx_hash.unwrap_or_else(Hash::zero),
-            &self.state_hash
+            &self
+                .state_hash
                 .unwrap_or_else(|| self.sandbox.last_state_hash()),
         )
     }
@@ -165,7 +167,8 @@ impl<'a> ProposeBuilder<'a> {
             self.round.unwrap_or_else(|| self.sandbox.current_round()),
             self.prev_hash.unwrap_or(&self.sandbox.last_hash()),
             self.tx_hashes.unwrap_or(&[]),
-            self.sandbox.s(self.validator_id
+            self.sandbox.s(self
+                .validator_id
                 .unwrap_or_else(|| self.sandbox.current_leader())),
         )
     }

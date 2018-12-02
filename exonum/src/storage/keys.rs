@@ -171,9 +171,9 @@ macro_rules! storage_key_for_ints {
     };
 }
 
-storage_key_for_ints!{u16, i16, 2, read_u16, write_u16}
-storage_key_for_ints!{u32, i32, 4, read_u32, write_u32}
-storage_key_for_ints!{u64, i64, 8, read_u64, write_u64}
+storage_key_for_ints! {u16, i16, 2, read_u16, write_u16}
+storage_key_for_ints! {u32, i32, 4, read_u32, write_u32}
+storage_key_for_ints! {u64, i64, 8, read_u64, write_u64}
 
 macro_rules! storage_key_for_crypto_types {
     ($type:ident, $size:expr) => {
@@ -193,9 +193,9 @@ macro_rules! storage_key_for_crypto_types {
     };
 }
 
-storage_key_for_crypto_types!{Hash, HASH_SIZE}
-storage_key_for_crypto_types!{PublicKey, PUBLIC_KEY_LENGTH}
-storage_key_for_crypto_types!{Signature, SIGNATURE_LENGTH}
+storage_key_for_crypto_types! {Hash, HASH_SIZE}
+storage_key_for_crypto_types! {PublicKey, PUBLIC_KEY_LENGTH}
+storage_key_for_crypto_types! {Signature, SIGNATURE_LENGTH}
 
 impl StorageKey for Vec<u8> {
     fn size(&self) -> usize {
@@ -354,7 +354,8 @@ mod tests {
                 // Fuzzed roundtrip
                 let mut buffer = [0_u8; $size];
                 let handpicked_vals = vec![$type::min_value(), $type::max_value()];
-                for x in rng.sample_iter(&Standard)
+                for x in rng
+                    .sample_iter(&Standard)
                     .take(FUZZ_SAMPLES)
                     .chain(handpicked_vals)
                 {
@@ -380,14 +381,14 @@ mod tests {
         };
     }
 
-    test_storage_key_for_int_type!{full  u8, 1 => test_storage_key_for_u8}
-    test_storage_key_for_int_type!{full  i8, 1 => test_storage_key_for_i8}
-    test_storage_key_for_int_type!{full u16, 2 => test_storage_key_for_u16}
-    test_storage_key_for_int_type!{full i16, 2 => test_storage_key_for_i16}
-    test_storage_key_for_int_type!{fuzz u32, 4 => test_storage_key_for_u32}
-    test_storage_key_for_int_type!{fuzz i32, 4 => test_storage_key_for_i32}
-    test_storage_key_for_int_type!{fuzz u64, 8 => test_storage_key_for_u64}
-    test_storage_key_for_int_type!{fuzz i64, 8 => test_storage_key_for_i64}
+    test_storage_key_for_int_type! {full  u8, 1 => test_storage_key_for_u8}
+    test_storage_key_for_int_type! {full  i8, 1 => test_storage_key_for_i8}
+    test_storage_key_for_int_type! {full u16, 2 => test_storage_key_for_u16}
+    test_storage_key_for_int_type! {full i16, 2 => test_storage_key_for_i16}
+    test_storage_key_for_int_type! {fuzz u32, 4 => test_storage_key_for_u32}
+    test_storage_key_for_int_type! {fuzz i32, 4 => test_storage_key_for_i32}
+    test_storage_key_for_int_type! {fuzz u64, 8 => test_storage_key_for_u64}
+    test_storage_key_for_int_type! {fuzz i64, 8 => test_storage_key_for_i64}
 
     #[test]
     fn signed_int_key_in_index() {
@@ -583,9 +584,11 @@ mod tests {
 
     #[test]
     fn hash_round_trip() {
-        let hashes = [Hash::from_hex(
-            "326c1da1a00b5b4c85929dac57f3c99ceea82ed2941173d879c57b8f21ae8c78",
-        ).unwrap()];
+        let hashes =
+            [
+                Hash::from_hex("326c1da1a00b5b4c85929dac57f3c99ceea82ed2941173d879c57b8f21ae8c78")
+                    .unwrap(),
+            ];
         assert_round_trip_eq(&hashes);
     }
 
@@ -593,7 +596,8 @@ mod tests {
     fn public_key_round_trip() {
         let hashes = [PublicKey::from_hex(
             "1e38d80b8a9786648a471b11a9624a9519215743df7321938d70bac73dae3b84",
-        ).unwrap()];
+        )
+        .unwrap()];
         assert_round_trip_eq(&hashes);
     }
 

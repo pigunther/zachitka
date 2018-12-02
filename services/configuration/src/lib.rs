@@ -53,7 +53,12 @@
 //! }
 //! ```
 
-#![deny(missing_debug_implementations, missing_docs, unsafe_code, bare_trait_objects)]
+#![deny(
+    missing_debug_implementations,
+    missing_docs,
+    unsafe_code,
+    bare_trait_objects
+)]
 
 #[macro_use]
 extern crate exonum;
@@ -88,10 +93,14 @@ use cmd::{Finalize, GenerateCommonConfig, GenerateTestnet};
 use config::ConfigurationServiceConfig;
 use exonum::encoding::serialize::json::reexport::Value;
 use exonum::{
-    api::ServiceApiBuilder, blockchain::{self, Transaction, TransactionSet}, crypto::Hash,
+    api::ServiceApiBuilder,
+    blockchain::{self, Transaction, TransactionSet},
+    crypto::Hash,
     encoding::Error as EncodingError,
     helpers::fabric::{self, keys, Command, CommandExtension, CommandName, Context},
-    messages::RawTransaction, node::State, storage::{Fork, Snapshot},
+    messages::RawTransaction,
+    node::State,
+    storage::{Fork, Snapshot},
 };
 
 mod api;

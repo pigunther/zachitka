@@ -20,9 +20,10 @@ use serde_json;
 use std::{cmp, collections::HashSet, fmt::Debug, hash::Hash as StdHash};
 
 use super::{
-    key::{BitsRange, ChildKind, KEY_SIZE, LEAF_KEY_PREFIX}, node::BranchNode,
-    proof::MapProofBuilder, HashedKey, MapProof, MapProofError, ProofMapIndex, ProofMapKey,
-    ProofPath,
+    key::{BitsRange, ChildKind, KEY_SIZE, LEAF_KEY_PREFIX},
+    node::BranchNode,
+    proof::MapProofBuilder,
+    HashedKey, MapProof, MapProofError, ProofMapIndex, ProofMapKey, ProofPath,
 };
 use crypto::{hash, CryptoHash, Hash, HashStream};
 use encoding::serialize::reexport::{DeserializeOwned, Serialize};
@@ -1056,7 +1057,8 @@ fn fuzz_delete_build_proofs(db: Box<dyn Database>) {
             &mut rng,
             data.iter().map(|item| item.0.clone()),
             SAMPLE_SIZE / 5,
-        ).unwrap();
+        )
+        .unwrap();
         rng.shuffle(&mut keys);
         let seq_keys = keys.split_off(SAMPLE_SIZE / 10);
         (keys, seq_keys)
@@ -1099,7 +1101,8 @@ fn fuzz_delete(db1: Box<dyn Database>, db2: Box<dyn Database>) {
 
     let saved_hash = index1.merkle_root();
 
-    let mut keys_to_remove = data.iter()
+    let mut keys_to_remove = data
+        .iter()
         .take(50)
         .map(|item| item.0.clone())
         .collect::<Vec<_>>();
@@ -1380,7 +1383,7 @@ mod memorydb_tests {
         Box::new(MemoryDB::new())
     }
 
-    common_tests!{}
+    common_tests! {}
 }
 
 mod rocksdb_tests {
@@ -1393,5 +1396,5 @@ mod rocksdb_tests {
         Box::new(RocksDB::open(path, &opts).unwrap())
     }
 
-    common_tests!{}
+    common_tests! {}
 }

@@ -18,8 +18,10 @@
 
 use chrono::{DateTime, Utc};
 use exonum::{
-    blockchain::{ExecutionError, ExecutionResult, Schema, Transaction}, crypto::PublicKey,
-    messages::Message, storage::{Fork, Snapshot},
+    blockchain::{ExecutionError, ExecutionResult, Schema, Transaction},
+    crypto::PublicKey,
+    messages::Message,
+    storage::{Fork, Snapshot},
 };
 
 use schema::TimeSchema;
@@ -94,7 +96,8 @@ impl TxTime {
         // Find all known times for the validators.
         let validator_times = {
             let idx = schema.validators_times();
-            let mut times = idx.iter()
+            let mut times = idx
+                .iter()
                 .filter_map(|(public_key, time)| {
                     keys.iter()
                         .find(|validator| validator.service_key == public_key)

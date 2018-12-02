@@ -25,7 +25,8 @@ use crypto::{gen_keypair_from_seed, CryptoHash, Hash, Seed, HASH_SIZE, SEED_LENG
 use helpers::{Height, Round, ValidatorId};
 use messages::{Message, Precommit, RawMessage, CONSENSUS};
 use sandbox::{
-    sandbox::{self, timestamping_sandbox}, sandbox_tests_helper::*,
+    sandbox::{self, timestamping_sandbox},
+    sandbox_tests_helper::*,
     timestamping::{TimestampingTxGenerator, DATA_SIZE, TIMESTAMPING_SERVICE},
 };
 
@@ -237,11 +238,9 @@ fn test_retrieve_block_and_precommits() {
     for precommit in precommits {
         assert_eq!(expected_height, precommit.height());
         assert_eq!(expected_block_hash, *precommit.block_hash());
-        assert!(
-            precommit
-                .raw()
-                .verify_signature(&sandbox.p(precommit.validator()),)
-        );
+        assert!(precommit
+            .raw()
+            .verify_signature(&sandbox.p(precommit.validator()),));
     }
     let bl_proof_option = sandbox.block_and_precommits(target_height);
     assert!(bl_proof_option.is_none());

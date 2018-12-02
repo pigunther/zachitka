@@ -64,7 +64,8 @@ impl CommandExtension for GenerateCommonConfig {
                 vec![(
                     "majority_count".to_owned(),
                     Value::try_from(majority_count).unwrap(),
-                )].into_iter(),
+                )]
+                .into_iter(),
             );
         };
 
@@ -168,12 +169,16 @@ pub fn generate_testnet_config(
     let (validators, services): (Vec<_>, Vec<_>) = (0..count as usize)
         .map(|_| (gen_keypair(), gen_keypair()))
         .unzip();
-    let genesis = GenesisConfig::new(validators.iter().zip(services.iter()).map(|x| {
-        ValidatorKeys {
-            consensus_key: (x.0).0,
-            service_key: (x.1).0,
-        }
-    }));
+    let genesis =
+        GenesisConfig::new(
+            validators
+                .iter()
+                .zip(services.iter())
+                .map(|x| ValidatorKeys {
+                    consensus_key: (x.0).0,
+                    service_key: (x.1).0,
+                }),
+        );
 
     let mut service_config: BTreeMap<String, Value> = BTreeMap::new();
 

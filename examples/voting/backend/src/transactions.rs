@@ -19,13 +19,15 @@
 #![allow(bare_trait_objects)]
 
 use exonum::{
-    blockchain::{ExecutionError, ExecutionResult, Transaction}, crypto::{CryptoHash, PublicKey},
-    messages::Message, storage::Fork,
+    blockchain::{ExecutionError, ExecutionResult, Transaction},
+    crypto::{CryptoHash, PublicKey},
+    messages::Message,
+    storage::Fork,
 };
 
 use schema::Schema;
-use VOTING_SERVICE_ID;
 use INITIAL_BALANCE;
+use VOTING_SERVICE_ID;
 
 /// Error codes emitted by wallet transactions during execution.
 #[derive(Debug, Fail)]
@@ -98,12 +100,11 @@ transactions! {
             pub_key: &PublicKey,
             /// Name of the new wallet.
             name:    &str,
-			/// Candidate
-			cand:    u64,
+            /// Candidate
+            cand:    u64,
         }
     }
 }
-
 
 impl Transaction for Transfer {
     fn verify(&self) -> bool {
@@ -163,7 +164,7 @@ impl Transaction for CreateWallet {
 
         if schema.wallet(pub_key).is_none() {
             let name = self.name();
-			let cand = self.cand();
+            let cand = self.cand();
             schema.create_wallet(pub_key, name, cand, &hash);
             Ok(())
         } else {

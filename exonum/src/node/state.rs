@@ -19,7 +19,8 @@ use failure;
 use serde_json::Value;
 
 use std::{
-    collections::{hash_map::Entry, BTreeMap, HashMap, HashSet}, sync::{Arc, RwLock},
+    collections::{hash_map::Entry, BTreeMap, HashMap, HashSet},
+    sync::{Arc, RwLock},
     time::{Duration, SystemTime},
 };
 
@@ -31,7 +32,8 @@ use messages::{
     BlockResponse, Connect, ConsensusMessage, Message, Precommit, Prevote, Propose, RawMessage,
 };
 use node::{
-    connect_list::{ConnectList, PeerAddress}, ConnectInfo,
+    connect_list::{ConnectList, PeerAddress},
+    ConnectInfo,
 };
 use storage::{KeySetIndex, MapIndex, Patch, Snapshot};
 
@@ -701,7 +703,8 @@ impl State {
 
     /// Updates known height for a validator identified by the public key.
     pub fn set_node_height(&mut self, key: PublicKey, height: Height) {
-        *self.nodes_max_height
+        *self
+            .nodes_max_height
             .entry(key)
             .or_insert_with(Height::zero) = height;
     }
@@ -1040,7 +1043,8 @@ impl State {
 
         let key = (msg.round(), *msg.propose_hash());
         let validators_len = self.validators().len();
-        let votes = self.prevotes
+        let votes = self
+            .prevotes
             .entry(key)
             .or_insert_with(|| Votes::new(validators_len));
         votes.insert(msg);
@@ -1097,7 +1101,8 @@ impl State {
 
         let key = (msg.round(), *msg.block_hash());
         let validators_len = self.validators().len();
-        let votes = self.precommits
+        let votes = self
+            .precommits
             .entry(key)
             .or_insert_with(|| Votes::new(validators_len));
         votes.insert(msg);
@@ -1200,7 +1205,8 @@ impl State {
 
     /// Add peer to node's `ConnectList`.
     pub fn add_peer_to_connect_list(&mut self, peer: ConnectInfo) {
-        let mut list = self.connect_list
+        let mut list = self
+            .connect_list
             .inner
             .write()
             .expect("ConnectList write lock");

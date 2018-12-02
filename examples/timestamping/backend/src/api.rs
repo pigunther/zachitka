@@ -15,8 +15,11 @@
 //! REST API.
 
 use exonum::{
-    api::{self, ServiceApiBuilder, ServiceApiState}, blockchain::{self, BlockProof},
-    crypto::{CryptoHash, Hash}, node::TransactionSend, storage::MapProof,
+    api::{self, ServiceApiBuilder, ServiceApiState},
+    blockchain::{self, BlockProof},
+    crypto::{CryptoHash, Hash},
+    node::TransactionSend,
+    storage::MapProof,
 };
 
 use schema::{Schema, TimestampEntry};

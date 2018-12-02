@@ -17,7 +17,8 @@ use serde_json;
 
 use exonum::{
     blockchain::{ConsensusConfig, GenesisConfig, StoredConfiguration, ValidatorKeys},
-    crypto::{self, CryptoHash, PublicKey, SecretKey}, helpers::{Height, Round, ValidatorId},
+    crypto::{self, CryptoHash, PublicKey, SecretKey},
+    helpers::{Height, Round, ValidatorId},
     messages::{Precommit, Propose},
 };
 
@@ -299,7 +300,8 @@ impl TestNetworkConfiguration {
                 node
             })
             .collect();
-        self.stored_configuration.validator_keys = self.validators
+        self.stored_configuration.validator_keys = self
+            .validators
             .iter()
             .cloned()
             .map(ValidatorKeys::from)
@@ -312,7 +314,8 @@ impl TestNetworkConfiguration {
     where
         for<'de> D: Deserialize<'de>,
     {
-        let value = self.stored_configuration
+        let value = self
+            .stored_configuration
             .services
             .get(id)
             .expect("Unable to find configuration for service");
@@ -334,7 +337,8 @@ impl TestNetworkConfiguration {
     }
 
     fn update_our_role(&mut self) {
-        let validator_id = self.validators
+        let validator_id = self
+            .validators
             .iter()
             .position(|x| x.public_keys().service_key == self.us.service_public_key)
             .map(|x| ValidatorId(x as u16));

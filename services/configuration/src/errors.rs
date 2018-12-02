@@ -17,8 +17,10 @@
 #![allow(bare_trait_objects)]
 
 use exonum::{
-    blockchain::{ExecutionError, StoredConfiguration}, crypto::Hash,
-    encoding::serialize::json::reexport::Error as JsonError, helpers::Height,
+    blockchain::{ExecutionError, StoredConfiguration},
+    crypto::Hash,
+    encoding::serialize::json::reexport::Error as JsonError,
+    helpers::Height,
 };
 
 use transactions::Propose;
@@ -80,7 +82,10 @@ pub(crate) enum Error {
     #[fail(display = "Does not reference actual config {:?}", _0)]
     InvalidConfigRef(StoredConfiguration),
 
-    #[fail(display = "Current height {:?} greater or equal than `actual_from`", _0)]
+    #[fail(
+        display = "Current height {:?} greater or equal than `actual_from`",
+        _0
+    )]
     ActivationInPast(Height),
 
     #[fail(display = "Already proposed; old proposal: {:?}", _0)]
@@ -90,7 +95,8 @@ pub(crate) enum Error {
     InvalidConfig(#[cause] JsonError),
 
     #[fail(
-        display = "Invalid majority count: {}, it should be >= {} and <= {}", proposed, min, max
+        display = "Invalid majority count: {}, it should be >= {} and <= {}",
+        proposed, min, max
     )]
     InvalidMajorityCount {
         min: usize,
