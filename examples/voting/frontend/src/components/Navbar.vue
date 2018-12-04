@@ -9,7 +9,7 @@
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link :to="{ name: 'user2' }" class="nav-link">User</router-link>
+            <router-link :to="{ name: 'user' }" class="nav-link">User</router-link>
           </li>
         </ul>
         <ul class="navbar-nav">

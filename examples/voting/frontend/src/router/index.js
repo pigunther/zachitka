@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import AuthPage from '../pages/Auth.vue'
-import WalletPage from '../pages/Wallet.vue'
 import BlockchainPage from '../pages/Blockchain.vue'
 import UserPage from '../pages/User.vue'
 import VotePage from '../pages/Vote.vue'

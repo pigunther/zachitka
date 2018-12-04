@@ -78,7 +78,7 @@
         });
 
         this.$nextTick(function () {
-          this.$router.push({ name: 'user2' });
+          this.$router.push({ name: 'user' });
         });
       },
 
@@ -117,7 +117,7 @@
         this.$store.commit('login', this.keyPair);
 
         this.$nextTick(function () {
-          this.$router.push({ name: 'user2' });
+          this.$router.push({ name: 'user' });
         });
       }
     }
