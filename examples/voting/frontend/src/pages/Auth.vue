@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container1">
-      <div class="header">Authorization</div>
+      <div class="header auth">Authorization</div>
       <tabs>
         <tab :is-active="true" title="Register">
           <form class="form" @submit.prevent="register">
@@ -31,14 +31,10 @@
       </tabs>
     </div>
 
-    <modal :visible="isModalVisible" title="Wallet has been created" action-btn="Log in" @close="closeModal"
+    <modal :visible="isModalVisible" title="Use has been created" action-btn="Log in" @close="closeModal"
            @submit="proceed">
-      <div class="alert alert-warning" role="alert">Save the secret key in a safe place. You will need it to log in to
+      <div class="alert alert-warning" role="alert">Find your secret key in the user tab. Save it in a safe place. You will need it to log in to
       the demo next time.
-      </div>
-      <div class="form-group">
-        <label>Secret key:</label>
-        <div><code>{{ keyPair.secretKey }}</code></div>
       </div>
     </modal>
 
@@ -54,8 +50,8 @@
 
   module.exports = {
     components: {
-      Tab,
       Tabs,
+      Tab,
       Modal,
       Spinner
     },
@@ -82,7 +78,7 @@
         });
 
         this.$nextTick(function () {
-          this.$router.push({ name: 'user' });
+          this.$router.push({ name: 'user2' });
         });
       },
 
@@ -91,8 +87,8 @@
           return this.$notify('error', 'The name is a required field');
         }
 
-        var candidate = '0';
-        var checkedValue = $('#candidateCheck:checked').val();
+        let candidate = '0';
+        let checkedValue = $('#candidateCheck:checked').val();
         if (checkedValue === 'on') candidate = '1';
 //        console.log('check: ', checkedValue, ' candidate: ', candidate);
 
@@ -121,7 +117,7 @@
         this.$store.commit('login', this.keyPair);
 
         this.$nextTick(function () {
-          this.$router.push({ name: 'user' });
+          this.$router.push({ name: 'user2' });
         });
       }
     }
@@ -131,8 +127,6 @@
 <style>
   .header {
     width: 100%;
-    height: 60px;
-    line-height: 60px;
     background: #040b26;
     color: white;
     display: flex;
@@ -142,8 +136,15 @@
     font-weight: 700;
   }
 
+  .header.auth {
+    height: 60px;
+    line-height: 60px;
+  }
+
   .container1 {
     background: #f0f0f0;
+    height: 100%;
+    overflow-x: hidden;
   }
 
   .group-check {
@@ -161,5 +162,12 @@
   .btn.btn-primary {
     background: #92dd54;
     border: 1px solid #3d7a0b;
+  }
+
+  .alert-warning {
+    font-size: 20px;
+    color: black;
+    background-color: #92dd542e;
+    border: none;
   }
 </style>

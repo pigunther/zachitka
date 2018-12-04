@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Voting API.
-
 use exonum::{
     api::{self, ServiceApiBuilder, ServiceApiState},
     blockchain::{self, BlockProof, Transaction, TransactionSet}, crypto::{Hash, PublicKey},
@@ -23,6 +21,10 @@ use exonum::{
 use transactions::WalletTransactions;
 use wallet::Wallet;
 use {Schema, VOTING_SERVICE_ID};
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+use std::io::Write;
 
 /// Describes the query parameters for the `get_wallet` endpoint.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
@@ -67,6 +69,7 @@ pub struct WalletInfo {
     pub wallet_history: Option<WalletHistory>,
     /// Candidates.
     pub candidates: Vec<WalletProof>, //Vec<MapProof<PublicKey, Wallet>>,
+    pub winner: String
 }
 
 /// Public service API description.
@@ -76,6 +79,7 @@ pub struct PublicApi;
 impl PublicApi {
     /// Endpoint for getting a single wallet.
     pub fn wallet_info(state: &ServiceApiState, query: WalletQuery) -> api::Result<WalletInfo> {
+        println!("in wallet_info in api");
         let snapshot = state.snapshot();
         let general_schema = blockchain::Schema::new(&snapshot);
         let currency_schema = Schema::new(&snapshot);
@@ -134,23 +138,31 @@ impl PublicApi {
 //		println!("mcandidates: {:?}\n", candidates);
 
 //		let candidate_keys: Vec<PublicKey> = ckeys.iter().cloned().collect::<Vec<PublicKey>>();
+        println!("before ok in api");
+        //todo - write your own file path
+        let mut f = File::open("/Users/pigunther/workspace/zachitka/exonum/examples/voting/backend/output.vtk").expect("Unable to open file");
+
+        let mut winner = String::new();
+        f.read_to_string(&mut winner)
+            .expect("something went wrong reading the file");
 
         Ok(WalletInfo {
             block_proof,
             wallet_proof,
             wallet_history,
 			candidates,
-//			candidate_keys,
+            winner
         })
     }
 
-
     /// Endpoint for handling voting transactions.
     pub fn post_transaction(state: &ServiceApiState, query: WalletTransactions, ) -> api::Result<TransactionResponse> {
+        println!("start post_transaction");
         let transaction: Box<dyn Transaction> = query.into();
         let tx_hash = transaction.hash();
         state.sender().send(transaction)?;
-        println!("TransactionResponse: {:?}, {:?}", transaction, tx_hash);
+        //println!("TransactionResponse: {:?}, {:?}", transaction, tx_hash);
+        println!("post_transaction ok");
         Ok(TransactionResponse { tx_hash })
     }
 

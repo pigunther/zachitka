@@ -10,8 +10,10 @@
     "compile": "webpack",
     "test": "jest",
     "build": "npm run compile && npm run test",
+    "build:simple": "npm run compile",
     "start": "node server.js",
-    "serve": "node server.js -- --port=8280 --api-root=http://127.0.0.1:8200"
+    "serve": "node server.js -- --port=8280 --api-root=http://127.0.0.1:8200",
+    "startAll": "npm run compile ; node server.js -- --port=8280 --api-root=http://127.0.0.1:8200"
   },
   "jest": {
     "verbose": true,

@@ -74,6 +74,8 @@ transactions! {
             from:    &PublicKey,
             /// `PublicKey` of receiver's wallet.
             to:      &PublicKey,
+            ///f
+            ended: bool,
             /// Auxiliary number to guarantee [non-idempotence][idempotence] of transactions.
             ///
             /// [idempotence]: https://en.wikipedia.org/wiki/Idempotence
@@ -107,28 +109,55 @@ transactions! {
 
 impl Transaction for Transfer {
     fn verify(&self) -> bool {
-        (self.from() != self.to()) && self.verify_signature(self.from())
+        println!("go to verify Transfer Transaction");
+        {
+            println!("in verify Transfer Transaction: .{}", self.ended());
+            println!("in verify Transfer Transaction: .{}", self.from());
+            println!("in verify Transfer Transaction: .{}", self.verify_signature(self.from()));
+
+        }
+        self.verify_signature(self.from()) //add ability to transfer to urself
     }
 
     fn execute(&self, fork: &mut Fork) -> ExecutionResult {
-        let mut schema = Schema::new(fork);
+        if self.ended() {
+            println!("execute end_process transactoin for transfer");
+            let mut schema = Schema::new(fork);
 
-        let from = self.from();
-        let to = self.to();
-        let hash = self.hash();
+            let hash = self.hash();
 
-        let sender = schema.wallet(from).ok_or(Error::SenderNotFound)?;
+            schema.end_process(&hash);
 
-        let receiver = schema.wallet(to).ok_or(Error::ReceiverNotFound)?;
+            println!("ok end process");
 
-        if sender.balance() < INITIAL_BALANCE {
-            Err(Error::InsufficientCurrencyAmount)?
+            Ok(())
+        } else {
+            println!("execute transaction for transfer");
+            let mut schema = Schema::new(fork);
+
+            let from = self.from();
+            let to = self.to();
+            let hash = self.hash();
+
+            let sender = schema.wallet(from).ok_or(Error::SenderNotFound)?;
+
+            let receiver = schema.wallet(to).ok_or(Error::ReceiverNotFound)?;
+
+            if sender.balance() < INITIAL_BALANCE {
+                Err(Error::InsufficientCurrencyAmount)?
+            }
+
+            if to != from {
+                schema.decrease_wallet_balance(sender, &hash);
+                schema.increase_wallet_votes(receiver, &hash);
+            } else {
+                schema.decrease_wallet_balance_increase_wallet_votes(sender, &hash);
+            }
+
+            println!("execute ok");
+
+            Ok(())
         }
-
-        schema.decrease_wallet_balance(sender, &hash);
-        schema.increase_wallet_votes(receiver, &hash);
-
-        Ok(())
     }
 }
 

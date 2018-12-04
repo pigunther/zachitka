@@ -33,6 +33,10 @@ encoding_struct! {
         history_len:        u64,
         /// `Hash` of the transactions history.
         history_hash:       &Hash,
+        ///sdfsdf
+        ended:              bool,
+        ///sdf
+        winner:             &str
     }
 }
 
@@ -47,6 +51,8 @@ impl Wallet {
 			self.votes(),
             self.history_len() + 1,
             history_hash,
+            self.ended(),
+            self.winner()
         )
     }
 
@@ -60,6 +66,22 @@ impl Wallet {
 			votes,
             self.history_len() + 1,
             history_hash,
+            self.ended(),
+            self.winner()
+        )
+    }
+    ///sdl,
+    pub fn set_balance_and_votes(self, balance: u64, votes: u64, history_hash: &Hash) -> Self {
+        Self::new(
+            self.pub_key(),
+            self.name(),
+            balance,
+            self.cand(),
+            votes,
+            self.history_len() + 1,
+            history_hash,
+            self.ended(),
+            self.winner()
         )
     }
 }

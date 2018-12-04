@@ -11,64 +11,54 @@ const TX_TRANSFER_ID = 0;
 const TX_WALLET_ID = 2;
 const TableKey = Exonum.newType({
   fields: [
-    { name: 'service_id', type: Exonum.Uint16 },
-    { name: 'table_index', type: Exonum.Uint16 }
+    {name: 'service_id', type: Exonum.Uint16},
+    {name: 'table_index', type: Exonum.Uint16}
   ]
 });
 const Wallet = Exonum.newType({
   fields: [
-    { name: 'pub_key', type: Exonum.PublicKey },
-    { name: 'name', type: Exonum.String },
-    { name: 'balance', type: Exonum.Uint64 },
-    { name: 'cand', type: Exonum.Uint64 },
-    { name: 'votes', type: Exonum.Uint64 },
-    { name: 'history_len', type: Exonum.Uint64 },
-    { name: 'history_hash', type: Exonum.Hash }
+    {name: 'pub_key', type: Exonum.PublicKey},
+    {name: 'name', type: Exonum.String},
+    {name: 'balance', type: Exonum.Uint64},
+    {name: 'cand', type: Exonum.Uint64},
+    {name: 'votes', type: Exonum.Uint64},
+    {name: 'history_len', type: Exonum.Uint64},
+    {name: 'history_hash', type: Exonum.Hash},
+    {name: 'ended', type: Exonum.Bool},
+    {name: 'winner', type: Exonum.String}
   ]
 });
 const TransactionMetaData = Exonum.newType({
   fields: [
-    { name: 'tx_hash', type: Exonum.Hash },
-    { name: 'execution_status', type: Exonum.Bool }
+    {name: 'tx_hash', type: Exonum.Hash},
+    {name: 'execution_status', type: Exonum.Bool}
   ]
 });
 
-function TransferTransaction () {
+function TransferTransaction() {
   return Exonum.newMessage({
     protocol_version: PROTOCOL_VERSION,
     service_id: SERVICE_ID,
     message_id: TX_TRANSFER_ID,
     fields: [
-      { name: 'from', type: Exonum.PublicKey },
-      { name: 'to', type: Exonum.PublicKey },
-//      { name: 'amount', type: Exonum.Uint64 },
-      { name: 'seed', type: Exonum.Uint64 }
+      {name: 'from', type: Exonum.PublicKey},
+      {name: 'to', type: Exonum.PublicKey},
+      {name: 'ended', type: Exonum.Bool},
+      {name: 'seed', type: Exonum.Uint64}
     ]
   });
 }
 
-/*function IssueTransaction () {
-  return Exonum.newMessage({
-    protocol_version: PROTOCOL_VERSION,
-    service_id: SERVICE_ID,
-    message_id: TX_ISSUE_ID,
-    fields: [
-      { name: 'pub_key', type: Exonum.PublicKey },
-      { name: 'amount', type: Exonum.Uint64 },
-      { name: 'seed', type: Exonum.Uint64 }
-    ]
-  })
-}*/
 
-function CreateTransaction () {
+function CreateTransaction() {
   return Exonum.newMessage({
     protocol_version: PROTOCOL_VERSION,
     service_id: SERVICE_ID,
     message_id: TX_WALLET_ID,
     fields: [
-      { name: 'pub_key', type: Exonum.PublicKey },
-      { name: 'name', type: Exonum.String },
-      { name: 'cand', type: Exonum.Uint64 }
+      {name: 'pub_key', type: Exonum.PublicKey},
+      {name: 'name', type: Exonum.String},
+      {name: 'cand', type: Exonum.Uint64}
     ]
   });
 }
@@ -123,31 +113,13 @@ module.exports = {
 
         // Sign transaction
         const signature = transaction.sign(keyPair.secretKey, data);
-          console.log('signature=', signature);
-          console.log('keyPair=', keyPair);
-          console.log('data=', data);
+        console.log('signature=', signature);
+        console.log('keyPair=', keyPair);
+        console.log('data=', data);
 
         // Send transaction into blockchain
         return transaction.send(TRANSACTION_URL, TRANSACTION_EXPLORER_URL, data, signature);
       },
-
-/*      addFunds(keyPair, amountToAdd, seed) {
-        // Describe transaction
-        const transaction = new IssueTransaction()
-
-        // Transaction data
-        const data = {
-          pub_key: keyPair.publicKey,
-          amount: amountToAdd.toString(),
-          seed: seed
-        }
-
-        // Sign transaction
-        const signature = transaction.sign(keyPair.secretKey, data)
-
-        // Send transaction into blockchain
-        return transaction.send(TRANSACTION_URL, TRANSACTION_EXPLORER_URL, data, signature)
-      },*/
 
       transfer(keyPair, receiver, seed) {
         // Describe transaction
@@ -157,17 +129,38 @@ module.exports = {
         const data = {
           from: keyPair.publicKey,
           to: receiver,
+          ended: false,
           seed: seed
         };
 
         // Sign transaction
         const signature = transaction.sign(keyPair.secretKey, data);
+        console.log("signature in transfer transaction:", signature);
+        // Send transaction into blockchain
+        return transaction.send(TRANSACTION_URL, TRANSACTION_EXPLORER_URL, data, signature);
+      },
+
+      endProcess(keyPair, receiver, seed) {
+        // Describe transaction
+        const transaction = new TransferTransaction();
+
+        // Transaction data
+        const data = {
+          from: keyPair.publicKey,
+          to: receiver,
+          seed: seed,
+          ended: true
+        };
+
+        // Sign transaction
+        const signature = transaction.sign(keyPair.secretKey, data);
+        console.log("signature in end transaction:", signature);
 
         // Send transaction into blockchain
         return transaction.send(TRANSACTION_URL, TRANSACTION_EXPLORER_URL, data, signature);
       },
 
-      getWallet(publicKey) {
+      getUser(publicKey) {
         return axios.get('/api/services/configuration/v1/configs/actual').then(response => {
           // actual list of public keys of validators
           const validators = response.data.config.validator_keys.map(validator => {
@@ -177,6 +170,9 @@ module.exports = {
           return axios.get(`/api/services/voting/v1/wallets/info?pub_key=${publicKey}`)
             .then(response => response.data)
             .then(data => {
+
+              console.log(data);
+
               if (!Exonum.verifyBlock(data.block_proof, validators)) {
                 throw new Error('Block can not be verified');
               }
@@ -197,6 +193,7 @@ module.exports = {
 
               // find wallet in the tree of all wallets
               const walletProof = new Exonum.MapProof(data.wallet_proof.to_wallet, Exonum.PublicKey, Wallet);
+              console.log(walletProof, walletsHash);
               if (walletProof.merkleRoot !== walletsHash) {
                 throw new Error('Wallet proof is corrupted');
               }
@@ -204,14 +201,22 @@ module.exports = {
               if (typeof wallet === 'undefined') {
                 throw new Error('Wallet not found');
               }
+              const winner = data.winner;
 
-              // get transactions
-              const transactionsMetaData = Exonum.merkleProof(
+              console.log(
                 wallet.history_hash,
                 wallet.history_len,
                 data.wallet_history.proof,
                 [0, wallet.history_len],
                 TransactionMetaData
+              );
+              // get transactions
+              const transactionsMetaData = Exonum.merkleProof(
+                wallet.history_hash,        //rootHash
+                wallet.history_len,         //count
+                data.wallet_history.proof,  //blockProof
+                [0, wallet.history_len],    //range
+                TransactionMetaData         //type
               );
 
               if (data.wallet_history.transactions.length !== transactionsMetaData.length) {
@@ -224,13 +229,13 @@ module.exports = {
               let transactions = [];
               for (let i in data.wallet_history.transactions) {
                 let transaction = data.wallet_history.transactions[i];
-                
+
                 // get transaction definition
                 let Transaction = getTransaction(transaction.message_id);
 
                 // get transaction owner
                 const owner = getOwner(transaction);
-                
+
                 // add a signature to the transaction definition
                 Transaction.signature = transaction.signature;
 
@@ -261,13 +266,12 @@ module.exports = {
                 }
                 const cwalletsHash = ctableProof.entries.get(tableKey);
                 if (typeof cwalletsHash === 'undefined') {
-                  throw new Error('Candidates wallets table not found');
                   console.log('Candidates wallets table not found');
-
+                  throw new Error('Candidates wallets table not found');
                 }
-                
+
                 const cwalletProof = new Exonum.MapProof(data.candidates[i].to_wallet, Exonum.PublicKey, Wallet);
-                
+
                 if (cwalletProof.merkleRoot !== cwalletsHash) {
                   console.log('Candidates wallet proof is corrupted');
                   throw new Error('Candidates wallet proof is corrupted');
@@ -288,41 +292,13 @@ module.exports = {
                 block: data.block_proof.block,
                 wallet: wallet,
                 transactions: transactions,
-                candidateWallets: candidateWallets
+                candidateWallets: candidateWallets,
+                winner: winner
               };
             });
         });
       },
 
-/*      getCandidateKeys() {
-        return axios.get('/api/services/configuration/v1/configs/actual').then(response => {
-          // actual list of public keys of validators
-          const validators = response.data.config.validator_keys.map(validator => {
-            return validator.consensus_key
-          })
-
-          return axios.get('/api/services/voting/v1/wallets/keys')
-            .then(response => response.data)
-            .then(data => {
-              if (!Exonum.verifyBlock(data.block_proof, validators)) {
-                throw new Error('Block can not be verified')
-              }
-
-              console.log('data=', data);
-
-              let keys = [];
-              for (let i in data.candidate_keys) {
-                let key = data.candidate_keys[i];
-                keys.push(key);
-              }
-              
-
-              return {
-                keys: keys
-              }
-            })
-        })
-      },*/
 
       getBlocks(latest) {
         const suffix = !isNaN(latest) ? '&latest=' + latest : '';

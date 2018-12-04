@@ -3,10 +3,13 @@ import Router from 'vue-router'
 import AuthPage from '../pages/Auth.vue'
 import WalletPage from '../pages/Wallet.vue'
 import BlockchainPage from '../pages/Blockchain.vue'
+import UserPage from '../pages/User.vue'
+import VotePage from '../pages/Vote.vue'
 import BlockPage from '../pages/Block.vue'
 import TransactionPage from '../pages/Transaction.vue'
+import TransactionsPage from '../pages/Transactions.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -16,14 +19,24 @@ export default new Router({
       component: AuthPage
     },
     {
-      path: '/user',
-      name: 'user',
-      component: WalletPage
-    },
-    {
       path: '/blockchain',
       name: 'blockchain',
       component: BlockchainPage
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: UserPage
+    },
+    {
+      path: '/vote',
+      name: 'vote',
+      component: VotePage
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: TransactionsPage
     },
     {
       path: '/block/:height',

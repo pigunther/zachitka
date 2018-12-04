@@ -1,9 +1,9 @@
 <template>
   <div class="tabs-container">
-    <ul class="nav nav-tabs mb-4">
+    <ul class="nav nav-tabs">
       <!-- eslint-disable-next-line vue/require-v-for-key -->
       <li v-for="tab in tabs" class="nav-item">
-        <a :class="{ 'active': current === tab }" href="#" class="nav-link" @click.prevent="changeTab(tab)">
+        <a :class="{ 'active': current === tab }" href="#" class="nav-link" @click="changeTab(tab)">
           {{ tab.title }}
         </a>
       </li>
@@ -54,6 +54,7 @@
   }
 
   .nav-tabs {
+    min-height: 40px;
     border-bottom: 1px solid #040b26;
     display: flex;
     justify-content: space-between;
@@ -79,7 +80,5 @@
     color: #7494c5;
   }
 
-  nav.nav-tabs.mb-4 {
-    height: 40px;
-  }
 </style>
+//todo - слишком низка кнопка регистрации на мобилке

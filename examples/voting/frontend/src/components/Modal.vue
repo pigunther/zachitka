@@ -72,4 +72,14 @@
   .modal-backdrop {
     opacity: 0.25;
   }
+
+  .modal-content {
+    background: #f0f0f0;
+    border-color: #040b26;
+  }
+
+  .modal-footer,
+  .modal-header {
+    border-color: #040b2642;
+  }
 </style>

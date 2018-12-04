@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <navbar/>
+  <div class="container2-main">
+    <navbar title="Block"/>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <nav class="mt-5" aria-label="breadcrumb">
+    <div class="container2 block">
+      <div class="container2-row">
+          <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
                 <router-link :to="{ name: 'blockchain' }">Blockchain</router-link>
@@ -14,30 +13,16 @@
             </ol>
           </nav>
 
-          <div class="card mt-5">
-            <div class="card-header">Transactions</div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item font-weight-bold">
-                <div class="row">
-                  <div class="col-sm-12">Hash</div>
-                </div>
-              </li>
-              <!-- eslint-disable-next-line vue/require-v-for-key -->
-              <li v-for="(transaction) in transactions" class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <router-link :to="{ name: 'transaction', params: { hash: transaction } }">{{ transaction }}</router-link>
-                  </div>
-                </div>
-              </li>
-              <li v-if="transactions.length === 0" class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <em class="text-secondary">There are no transactions in the block</em>
-                  </div>
-                </div>
-              </li>
-            </ul>
+          <div class="card-row">
+            <div>Hash</div>
+            <div v-for="(transaction) in transactions">
+              <router-link :to="{ name: 'transaction', params: { hash: transaction, ownPage: true } }">{{ transaction }}</router-link>
+            </div>
+          </div>
+
+          <div  v-if="!transactions" class="card-row">
+            <div></div>
+            <div>There are no transactions in the block</div>
           </div>
 
           <nav class="mt-5" aria-label="Nearby blocks navigation">
@@ -50,7 +35,6 @@
               </li>
             </ul>
           </nav>
-        </div>
       </div>
     </div>
 
@@ -112,3 +96,31 @@
     }
   };
 </script>
+<style>
+  .container2.block .card-row div:not(:first-child) {
+    line-height: 28px;
+    margin-left: 20px;
+    color: #000c;
+    white-space: pre-line;
+  }
+
+  .page-link {
+    color: #7494c5;
+    border: 1px solid #7494c55e;
+  }
+
+  .container2.block {
+    flex: 1;
+  }
+
+  .container2-main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f0f0f0;
+  }
+
+  .page-item .page-link {
+    background: #fafafa;
+  }
+</style>

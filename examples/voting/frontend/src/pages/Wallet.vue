@@ -66,21 +66,6 @@
           </div>
         </div>
         <div class="col-md-6">
-          <!--div class="card mt-5">
-            <div class="card-header">Add funds</div>
-            <div class="card-body">
-              <form @submit.prevent="addFunds">
-                <div class="form-group">
-                  <label class="d-block">Select amount to be added:</label>
-                  <div v-for="variant in variants" :key="variant.id" class="form-check form-check-inline">
-                    <input :id="variant.id" :value="variant.amount" :checked="amountToAdd == variant.amount" v-model="amountToAdd" class="form-check-input" type="radio">
-                    <label :for="variant.id" class="form-check-label">${{ variant.amount }}</label>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Add funds</button>
-              </form>
-            </div>
-          </!--div-->
 
           <div class="card mt-5">
             <div class="card-header">Vote</div>
@@ -100,19 +85,6 @@
                     <label :for="variant.key" class="form-check-label">{{ variant.name }}</label>
                   </div>
                 </div>
-                <!--div class="form-group">
-                  <label>Receiver:</label>
-                  <input v-model="receiver" type="text" class="form-control" placeholder="Enter public key" required>
-                </!--div-->
-                <!--div class="form-group">
-                  <label>Amount:</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">$</div>
-                    </div>
-                    <input v-model="amountToTransfer" type="number" class="form-control" placeholder="Enter amount" min="0" required>
-                  </div>
-                </!--div-->
                 <button id="btnvote" type="submit" class="btn btn-primary">{{ btnVoteText }}</button>
               </form>
             </div>
@@ -144,14 +116,12 @@
         cand: '',
         votes: '',
         candidateWallets: [],
-//        amountToAdd: 10,
         defcandidate: 'none',
         receiver: '',
         amountToTransfer: '',
         isSpinnerVisible: false,
         transactions: [],
         variants: [
-//          { key: 'none', name: 'none' }
         ],
         btnVoteText: 'Vote',
         btnVotedText: 'You have voted'
@@ -186,7 +156,7 @@
         this.isSpinnerVisible = true;
 
         try {
-          const data = await this.$blockchain.getWallet(this.keyPair.publicKey);
+          const data = await this.$blockchain.getUser(this.keyPair.publicKey);
 
           for (let i in data.candidateWallets) {
             let vname = data.candidateWallets[i].name + ' ..... Votes: ' + data.candidateWallets[i].votes;
@@ -226,33 +196,14 @@
           this.$notify('error', error.toString());
         }
       },
-
-/*      async addFunds() {
-        this.isSpinnerVisible = true
-
-        const seed = this.$blockchain.generateSeed()
-
-        try {
-          await this.$blockchain.addFunds(this.keyPair, this.amountToAdd, seed)
-          const data = await this.$blockchain.getWallet(this.keyPair.publicKey)
-          this.balance = data.wallet.balance
-          this.transactions = data.transactions
-          this.isSpinnerVisible = false
-          this.$notify('success', 'Add funds transaction has been written into the blockchain')
-        } catch (error) {
-          this.isSpinnerVisible = false
-          this.$notify('error', error.toString())
-        }
-      },*/
-
       async transfer() {
         if (!this.$validateHex(this.receiver)) {
           return this.$notify('error', 'Invalid public key is passed');
         }
 
-        if (this.receiver === this.keyPair.publicKey) {
-          return this.$notify('error', 'Can not transfer funds to yourself');
-        }
+        // if (this.receiver === this.keyPair.publicKey) {
+        //   return this.$notify('error', 'Can not vote for yourself');
+        // }
 
         this.isSpinnerVisible = true;
 
@@ -262,8 +213,8 @@
 
         try {
           await this.$blockchain.transfer(this.keyPair, this.receiver, seed);
-          const data = await this.$blockchain.getWallet(this.keyPair.publicKey);
-
+          const data = await this.$blockchain.getUser(this.keyPair.publicKey);
+          console.log("data", data);
           if (data.wallet.balance > 0) {
             this.balance = 'No';
             $('#btnvote').prop('disabled', false);
@@ -273,12 +224,10 @@
             $('#btnvote').prop('disabled', true);
             this.btnVoteText = this.btnVotedText;
           }
-//          data.wallet.balance > 0 ? this.balance = 'No' : this.balance = 'Yes';
-
           
           this.transactions = data.transactions;
           this.isSpinnerVisible = false;
-          this.$notify('success', 'Transfer transaction has been written into the blockchain');
+          this.$notify('success', 'Your voting has been successfully recorded.');
         } catch (error) {
           this.isSpinnerVisible = false;
           this.$notify('error', error.toString());
